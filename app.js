@@ -46,41 +46,91 @@ equals.setAttribute("id", "equal");
 const clearBtn = document.getElementById("0");
 const deleteBtn = document.getElementById("3");
 
+const period = document.getElementById("6");
+const divide = document.getElementById("1");
+const multiply = document.getElementById("2");
+const subtract = document.getElementById("4");
+const add = document.getElementById("5");
+const left = document.getElementById("7");
+const right = document.getElementById("8");
+
+period.classList.add("operator");
+divide.classList.add("operator");
+multiply.classList.add("operator");
+subtract.classList.add("operator");
+add.classList.add("operator");
+left.classList.add("operator");
+right.classList.add("operator");
+
+const operators = document.querySelectorAll(".operator");
+const arr = [...operators];
+
+
+function findElem() {
+  let arrMap = arr.find(x => x.includes(display.innerText) );
+  console.log(arrMap);
+}
+// console.log(arr)
+operators.forEach((x) => {
+  x.addEventListener("click", () => {
+    // console.log(x)
+  });
+});
+// console.log(arr[display.innerText.charAt(display.innerText.length - 1)].innerHTML)
 clearBtn.addEventListener("click", clearText);
 deleteBtn.addEventListener("click", deleteText);
 
+let newArr = []
 const buttons = [...document.getElementsByClassName("button")];
 buttons.map((x) => {
-  x.onclick = isLoaded = false;
   x.addEventListener("click", (e) => {
-    // else {
-    display.innerText.slice(0, -1);
-    if (e.target.classList.contains("number") || e.target.id === "6") {
-      isLoaded = false;
-      console.log(display.innerText.slice(0, 1));
-      display.innerText.slice(0, 1);
+    // if(arr.indexOf(e.target)) return
+    // console.log(display.innerText.charAt(display.innerText.length - 1))
+    // console.log(arr[display.innerText.length - 1].textContent)
+    // console.log(arr[display.innerText.length - 1].textContent === display.innerText.charAt(display.innerText.length - 1))
+    // for(let i = 0; i < display.innerText.length; i++) {
+    //   console.log(arr[i].textContent === display.innerText.charAt(display.innerText.length - 1))
+    //   if(arr[i].textContent === display.innerText.charAt(display.innerText.length - 1)) return
+    // }
+    if (
+      e.target.classList.contains("number") ||
+      e.target.classList.contains("operator")
+    ) {
+      // console.log(e.target.innerText === display.innerText.charAt(display.innerText.length - 1))
+      // console.log(e.target.innerText)
+      // console.log(display.innerText)
+      // console.log(e.target.classList)
+      if (
+        e.target === period &&
+        display.innerText.includes(".") &&
+        !display.innerText.includes("operator")
+      )
+        return;
       display.innerText += e.target.innerText;
-      let value = display.innerText;
-      console.log(value)
+      newArr.push(e.target.classList)
+      console.log(newArr)
     }
-    getCurrentValue(e.target);
+    switch (e.target.innerText) {
+      case "=":
+        try {
+          display.innerText = eval(display.innerText);
+        } catch {
+          console.error("nope");
+        }
+        return;
+    }
   });
 });
 
-function getCurrentValue(value) {
-  if (value) {
-    console.log(value.innerText, value.id);
-  }
-}
 function clearText() {
   display.innerText = "";
+  if (display.innerText < 0) return;
 }
 
 function deleteText() {
+  if (display.innerText < 0) return;
   display.innerText = display.innerText.slice(0, -1);
-  console.log("done");
 }
-
 
 // console.log(e.target.innerText)
 // console.log(typeof(e.target.innerText))
