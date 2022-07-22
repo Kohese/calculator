@@ -3,28 +3,7 @@ const btns = document.createElement("div");
 container.appendChild(btns).classList.add("buttons");
 const display = document.querySelector("#display");
 
-const data = [
-  "C",
-  "/",
-  "*",
-  "←",
-  7,
-  8,
-  9,
-  "-",
-  4,
-  5,
-  6,
-  "+",
-  1,
-  2,
-  3,
-  ".",
-  "(",
-  0,
-  ")",
-  "=",
-];
+const data = ["C","/","*","←",7,8,9,"-",4,5,6,"+",1,2,3,".","(",0,")","=",];
 
 (() => {
   let i = 0;
@@ -62,39 +41,24 @@ add.classList.add("operator");
 left.classList.add("operator", "parenthesis-left");
 right.classList.add("operator", "parenthesis-right");
 
-// console.log(arr[display.innerText.charAt(display.innerText.length - 1)].innerHTML)
 clearBtn.addEventListener("click", clearText);
 deleteBtn.addEventListener("click", deleteText);
 
 let newArr = [];
 const buttons = [...document.getElementsByClassName("button")];
+
 buttons.map((x) => {
   x.addEventListener("click", (e) => {
-    if (
-      e.target.classList.contains("number") ||
-      e.target.classList.contains("parenthesis-left") ||
-      (e.target.classList.contains("operator") && display.innerText.length > 0)
-    ) {
-      // if (e.target === period && display.innerText.includes("."))
-      // return;
+    if (e.target.classList.contains("number") ||e.target.classList.contains("parenthesis-left") || (e.target.classList.contains("operator") && display.innerText.length > 0)) {
 
       newArr.push(e.target.classList.value);
-      if(display.innerText.length >= 0) {
-        if (
-          newArr[display.innerText.length - 1] === "button operator" &&
-          e.target.classList.value === "button operator"
-        )
-          return;
-        }
-        console.log(newArr[display.innerText.length])
-        display.innerText += e.target.innerText;
+      if (display.innerText.length >= 0) {
+        if (newArr[display.innerText.length - 1] === "button operator" && e.target.classList.value === "button operator") return;
+      }
+      display.innerText += e.target.innerText;
       if (display.innerText.length >= 1) {
-        // if(e.target.classList.value !== 'number button' && e.target.classList.value !== newArr[display.innerText.length -1]) {
-        //   return newArr;
-        // }
         if (e.target.classList.value === newArr[display.innerText.length - 1]) {
-          console.log(newArr);
-          console.log("test");
+
         }
       }
     }
@@ -102,9 +66,9 @@ buttons.map((x) => {
       if (display.innerText.length > 1) {
         try {
           display.innerText = eval(display.innerText);
-        } catch {
-          console.error("nope");
-        }
+        } catch(err) {
+          console.error(err)
+        } 
       }
     }
   });
@@ -112,7 +76,7 @@ buttons.map((x) => {
 
 function clearText() {
   display.innerText = "";
-  newArr = []
+  newArr = [];
   if (display.innerText < 0) return;
 }
 
@@ -121,7 +85,3 @@ function deleteText() {
   display.innerText = display.innerText.slice(0, -1);
   newArr.pop();
 }
-
-// console.log(e.target.innerText)
-// console.log(typeof(e.target.innerText))
-// if(numbers.indexOf(e.target.innerText)) console.log(true)
