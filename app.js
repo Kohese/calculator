@@ -59,77 +59,67 @@ divide.classList.add("operator");
 multiply.classList.add("operator");
 subtract.classList.add("operator");
 add.classList.add("operator");
-left.classList.add("operator");
-right.classList.add("operator");
+left.classList.add("operator", "parenthesis-left");
+right.classList.add("operator", "parenthesis-right");
 
-const operators = document.querySelectorAll(".operator");
-const arr = [...operators];
-
-
-function findElem() {
-  let arrMap = arr.find(x => x.includes(display.innerText) );
-  console.log(arrMap);
-}
-// console.log(arr)
-operators.forEach((x) => {
-  x.addEventListener("click", () => {
-    // console.log(x)
-  });
-});
 // console.log(arr[display.innerText.charAt(display.innerText.length - 1)].innerHTML)
 clearBtn.addEventListener("click", clearText);
 deleteBtn.addEventListener("click", deleteText);
 
-let newArr = []
+let newArr = [];
 const buttons = [...document.getElementsByClassName("button")];
 buttons.map((x) => {
   x.addEventListener("click", (e) => {
-    // if(arr.indexOf(e.target)) return
-    // console.log(display.innerText.charAt(display.innerText.length - 1))
-    // console.log(arr[display.innerText.length - 1].textContent)
-    // console.log(arr[display.innerText.length - 1].textContent === display.innerText.charAt(display.innerText.length - 1))
-    // for(let i = 0; i < display.innerText.length; i++) {
-    //   console.log(arr[i].textContent === display.innerText.charAt(display.innerText.length - 1))
-    //   if(arr[i].textContent === display.innerText.charAt(display.innerText.length - 1)) return
-    // }
     if (
       e.target.classList.contains("number") ||
-      e.target.classList.contains("operator")
+      e.target.classList.contains("parenthesis-left") ||
+      (e.target.classList.contains("operator") && display.innerText.length > 0)
     ) {
-      // console.log(e.target.innerText === display.innerText.charAt(display.innerText.length - 1))
-      // console.log(e.target.innerText)
-      // console.log(display.innerText)
-      // console.log(e.target.classList)
-      if (
-        e.target === period &&
-        display.innerText.includes(".") &&
-        !display.innerText.includes("operator")
-      )
-        return;
-      display.innerText += e.target.innerText;
-      newArr.push(e.target.classList)
-      console.log(newArr)
+      // if (e.target === period && display.innerText.includes("."))
+      // return;
+
+      newArr.push(e.target.classList.value);
+      if(display.innerText.length >= 0) {
+        if (
+          newArr[display.innerText.length - 1] === "button operator" &&
+          e.target.classList.value === "button operator"
+        )
+          return;
+        }
+        console.log(newArr[display.innerText.length])
+        display.innerText += e.target.innerText;
+      if (display.innerText.length >= 1) {
+        // if(e.target.classList.value !== 'number button' && e.target.classList.value !== newArr[display.innerText.length -1]) {
+        //   return newArr;
+        // }
+        if (e.target.classList.value === newArr[display.innerText.length - 1]) {
+          console.log(newArr);
+          console.log("test");
+        }
+      }
     }
-    switch (e.target.innerText) {
-      case "=":
+    if (e.target === equals) {
+      if (display.innerText.length > 1) {
         try {
           display.innerText = eval(display.innerText);
         } catch {
           console.error("nope");
         }
-        return;
+      }
     }
   });
 });
 
 function clearText() {
   display.innerText = "";
+  newArr = []
   if (display.innerText < 0) return;
 }
 
 function deleteText() {
   if (display.innerText < 0) return;
   display.innerText = display.innerText.slice(0, -1);
+  newArr.pop();
 }
 
 // console.log(e.target.innerText)
